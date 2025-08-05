@@ -11,7 +11,7 @@ class ConexionSQLite():
     def __init__(self):
         '''Init de la clase padre "ConexionSQLite'''
         self._lock = threading.Lock()
-        self._dbpath=abspath(join(dirname(__file__),'db_pass.db'))
+        self._dbpath=abspath(join(dirname(__file__),'Data','db_pass.db'))
         self.conn=sqlite3.connect(self._dbpath,check_same_thread=False)
         self.cursor=self.conn.cursor()
         self.cursor.execute("PRAGMA foreign_keys= ON")

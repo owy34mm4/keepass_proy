@@ -1,0 +1,44 @@
+# Indicamos la versión de la sintaxis de docker-compose que vamos a usar
+version: '3.8'
+#Declaramos los servicios que vamos a orquestar a través de nuestro compose
+services:
+  #Declaramos el servicio llamado {frontend}
+  frontend:
+    container_name: Frontend_Keepass_pry
+    #Establecemos la construccion de nuestro servicio
+    build:
+      #Como contexto asignamos la ruta donde se encuentra el dockerfile constructor del servicio
+      context: ./frontend
+    #Especificamos la redireccion de puertos del servicio {frontend}
+    ports:
+      - "127.0.0.1:3000:3000"
+    #Establecemos de que servicio depende el funcionamiento del servicio declarado -> {frontend} depende de que {backend} esté funcionando
+    depends_on:
+      - backend
+    #Conectamos este servicio a la red personalizada para que se comunique con el backend
+    networks:
+      - mi_red
+
+  
+  #Declaramos el servicio llamado {backend}
+  backend:
+    container_name: Backend_Keepass_pry
+    #Establecemos la construccion de nuestro servicio
+    build: 
+      #Como contexto le asignamos la ruta del directorio donde encontrara el dockerfile que expide su construccion
+      context: ./backend
+    #Establecemos los volumenes de este servicio{backend}-> Homologando || Ruta local:Ruta dentro del contenedor
+    volumes:
+      - ./backend/data:/backend/data
+    #Especificamos la redireccion de puertos del servicio{backend}
+    ports:
+      - "127.0.0.1:5000:5000"
+    networks:
+      - mi_red
+
+  # Establecemos la creacion de las redes personalizadas
+  networks:
+    #Creamos la red llamada {mi_red}
+    mi_red:
+      #Tipo de Red: bridge (es  la red provada por defecto entre contenedores)
+      driver: bridge

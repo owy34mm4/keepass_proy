@@ -61,4 +61,11 @@ class ConexionUserSQLite(ConexionSQLite):
         self.conn.commit()
         return "Insercion Exitosa", True
 
+    @ConexionSQLite.check_conn
+    def delete_data_by_id(self,**kwargs):
+        '''Elimina los datos de un item, a través de su id y el id del usuario\n
+    Retorna String y Boolean\n
+    Recibe un json con la siguente informacion ->KWARGS ---> user_id - item_id
+    '''
+        return "",False
 ConexionUser= ConexionUserSQLite()
