@@ -1,0 +1,26 @@
+#Usamos la imagen oficial de Node.JS
+FROM node:20-slim
+
+#Creamos y usamos la carpeta de trabajo
+WORKDIR /frontend
+
+#Copiamos el package json y package-lock.json para instalar las dependencias
+COPY package.json package-lock.json* ./
+
+#Instalamos las dependecias de React
+RUN npm install
+
+#Copiamos todo el codigo fuente de React
+COPY . .
+
+# Instalar curl para debug (opcional)
+RUN apt-get update && apt-get install -y curl
+
+#Ejecutamos el build de react para generar los archivos estaticos
+RUN npm run build
+
+#Exponemos el puerto en el que react correrá
+EXPOSE 3000
+
+#Construmos la sentencia CMD
+CMD ["npm","start"]

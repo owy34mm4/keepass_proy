@@ -28,6 +28,7 @@ class ConexionUserSQLite(ConexionSQLite):
         msj,valores,control=dynamic_query_generator(1,"data",**kwargs)
         if not control:
             return f"Error en la insercion --> {msj}",False
+        print(msj)
         self.cursor.execute(msj,valores)
         self.conn.commit()
         return "Insercion Exitosa",True
@@ -67,5 +68,11 @@ class ConexionUserSQLite(ConexionSQLite):
     Retorna String y Boolean\n
     Recibe un json con la siguente informacion ->KWARGS ---> user_id - item_id
     '''
-        return "",False
+        msj,control=kwargs_checker(["item_id","user_id"],**kwargs)
+        if not control:
+            return msj,control
+        msj,valores,control=dynamic_query_generator(3,"data",kwargs["id_usuario"],**kwargs)
+        if not control:
+            return msj,False
+        self.cursor.execute()
 ConexionUser= ConexionUserSQLite()
