@@ -9,7 +9,7 @@ def login():
     if not check_login:
         return jsonify(msg="Credenciales no asociadas"),400
     acces_token=create_access_token(identity=str(iden))
-    resp= make_response(jsonify(acces_token=acces_token))
+    resp= make_response(jsonify(acces_token=acces_token, msg = "Inicio Sesion Exitoso"))
     set_access_cookies(resp,acces_token)
     return resp
 

@@ -15,8 +15,8 @@ services:
       - backend
     #Escribimos las variables de entorno
     environment:
-      - NEXT_PUBLIC_AUTH_API_URL=http://backend:5000/auth
-      - NEXT_PUBLIC_USER_API_URL=http://backend:5000/user
+      - NEXT_PUBLIC_AUTH_API_URL=http://localhost:5000/auth
+      - NEXT_PUBLIC_USER_API_URL=http://localhost:5000/user
     #Conectamos este servicio a la red personalizada para que se comunique con el backend
     networks:
       - mi_red

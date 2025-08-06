@@ -4,13 +4,13 @@ import {axiosAuthInstance} from "./axiosInstances/axiosAuthInstance";
 export default class AuthService{
     private static api=axiosAuthInstance;
 
-    static async login(usuario:string,contraseña:string){ 
+    static async login(user:string,psw:string){ 
         try{
             const response= await this.api.post("/login",{
-                usuario,
-                contraseña
-            });
-            return response.data.msj;
+                user,
+                psw
+            },{withCredentials:true});
+            return response.data.msg;
         }catch (error:any){
             throw new Error(error.response?.data?.mensaje || "Error en el Login")
         }
@@ -18,8 +18,8 @@ export default class AuthService{
 
     static async logout(){
         try{
-            const response = await this.api.post("/logout");
-            return response.data.msj
+            const response = await this.api.post("/logout",{},{withCredentials:true});
+            return response.data.msg
         }catch(error:any){
             throw new Error (error.response?.data?.mensaje || "Error al cerrar sesion")
         }

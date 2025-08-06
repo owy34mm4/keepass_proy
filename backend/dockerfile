@@ -12,8 +12,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 #Copiar todos los archivos del proyecto al contenedor
 COPY . .
+
+#anañidom variables de entorno
+ENV SECRET_KEY=ABCDEGFTUYTVDJDSFS
+ENV JWT_SECRET_KEY=USVFUSFYVUFSVUYFV
+#Añadimos ruta al path
 ENV PYTHONPATH="${PYTHONPATH}:/app"
 
+# Instalar curl para debug (opcional)
+# RUN apt-get update && apt-get install -y curl
 
 #Expone el puerto 5000 del contenedor
 EXPOSE 5000

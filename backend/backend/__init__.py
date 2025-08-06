@@ -28,8 +28,13 @@ en esta funcion es donde se relaiconan todas las configuraciones e inicializacio
     app=Flask(__name__)
     app.config.from_object(Config)
     CORS(app,
-         origins=["http://127.0.0.1/3000"],
-         supports_credentials=True)
+         origins=["http://localhost:3000",
+                "http://frontend:3000"
+                  ],
+         supports_credentials=True,
+         expose_headers=True,
+         allow_headers="*",
+         send_wildcard=True)
     jwt.init_app(app)
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(user_bp, url_prefix='/user')

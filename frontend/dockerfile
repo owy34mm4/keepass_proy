@@ -13,14 +13,18 @@ RUN npm install
 #Copiamos todo el codigo fuente de React
 COPY . .
 
-# Instalar curl para debug (opcional)
-RUN apt-get update && apt-get install -y curl
+ENV NEXT_PUBLIC_AUTH_API_URL=http://localhost:5000/auth
+ENV NEXT_PUBLIC_USER_API_URL=http://localhost:5000/user
 
 #Ejecutamos el build de react para generar los archivos estaticos
 RUN npm run build
 
 #Exponemos el puerto en el que react correrá
 EXPOSE 3000
+
+# Instalar curl para debug (opcional)
+# RUN apt-get update && apt-get install -y curl
+
 
 #Construmos la sentencia CMD
 CMD ["npm","start"]

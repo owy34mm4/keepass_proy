@@ -19,7 +19,7 @@ export function LoginForm() {
 
         try{
             const response= await AuthService.login(usuario,contraseña);
-            setMensaje(response.msj || "Login Exitoso");
+            setMensaje(response.msg || "Login Exitoso");
         }catch(err:any){
             setError(err.message);
         }finally{
