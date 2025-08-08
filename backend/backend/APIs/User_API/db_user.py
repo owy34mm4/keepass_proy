@@ -53,10 +53,10 @@ class ConexionUserSQLite(ConexionSQLite):
         '''Actualiza los datos de un item, filtrando por id e id_usuario\n
     Retorna String y Boolean\n
     Recibe un json->KWARGS el cual debe contener la data encriptada junto a user_id e item_id '''
-        msj,control= kwargs_checker(["title","user_name","password","url","notes","user_id","item_id"],**kwargs)
+        msj,control= kwargs_checker(["title","user_name","password","url","notes","user_id","id"],**kwargs)
         if not control:
             return msj,control
-        msj,valores,control=dynamic_query_generator(2,"data",kwargs["item_id"],**kwargs)
+        msj,valores,control=dynamic_query_generator(2,"data",kwargs["id"],**kwargs)
         if not control:
             return msj,control
         print(msj)

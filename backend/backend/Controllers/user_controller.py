@@ -25,7 +25,7 @@ Retorna HTTPResponse'''
         if not k in allowed_data:
             return jsonify(f"Argumento '{k}' invalido"),400
               
-    masterpass,control=ConexionUser.get_masterpass(user_id)
+    masterpass,control=ConexionUser.get_masterpass(user_id,closing=True)
     if not control:
         return jsonify(msg="No se encontró masterpass valida")
     masterpass=masterpass[0]
@@ -46,12 +46,12 @@ Retorna HTTPResponse'''
 @jwt_required()
 def user_read_all_data():
     user_id = get_jwt_identity()
-    masterpass, control= ConexionUser.get_masterpass(user_id)
+    masterpass, control= ConexionUser.get_masterpass(user_id,closing=True)
     if not control:
         return jsonify(msg="No se encontró masterpass, Vuelva a Iniciar Sesion")
     masterpass=masterpass[0]
 
-    data_t,control=ConexionUser.get_all_data(user_id)
+    data_t,control=ConexionUser.get_all_data(user_id,closing=True)
     data = [list(fila) for fila in data_t]
     if not control:
         return jsonify(msg=f"Error {data}")
@@ -67,9 +67,9 @@ def user_read_all_data():
     return jsonify(msg="Fetch Exitoso", ret = ret)
     
 @jwt_required()
-def user_uptade_data_by_id():
+def user_update_data_by_id():
     user_id=get_jwt_identity()
-    masterpass,control=ConexionUser.get_masterpass(user_id)
+    masterpass,control=ConexionUser.get_masterpass(user_id,closing=True)
     if not control:
         return jsonify(msg="No se pudo obtener masterpass, Vuleva a iniciar Sesion"),400
     masterpass=masterpass[0]
@@ -82,9 +82,9 @@ def user_uptade_data_by_id():
                 "url":encriptar(data.get("url"),masterpass),
                 "notes":encriptar(data.get("notes"),masterpass),
                 "user_id":user_id,
-                "item_id":data.get("item_id")
+                "id":data.get("item_id")
                }
-    msj,control=ConexionUser.update_data_by_id(**json_data)
+    msj,control=ConexionUser.update_data_by_id(closing=True,**json_data)
     if not control:
         return jsonify(msg=msj),400
 
@@ -99,7 +99,7 @@ def user_delete_data_by_id():
                }
     if json_data["item_id"]=='':
         return jsonify(msg="No se relacionó un item valido"),400
-    msj,control=ConexionUser.delete_data_by_id(**json_data)
+    msj,control=ConexionUser.delete_data_by_id(closing=True,**json_data)
     if not control:
         return jsonify(msg=msj),400
     return jsonify(msg=msj),200
@@ -112,7 +112,7 @@ def user_rotate_masterpass_and_items_hash():
         "masterpass":data.get("masterpass",'')
     }
 
-    msj,control=ConexionUser.user_change_masterpass_and_every_item_hash(user_id,**json_data)
+    msj,control=ConexionUser.user_change_masterpass_and_every_item_hash(user_id,closing=True,**json_data)
     if not control:
         return jsonify(msg=msj),400
     return jsonify(msg=msj),200

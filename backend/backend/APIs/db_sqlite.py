@@ -25,7 +25,7 @@ class ConexionSQLite():
         Ahorrando lineas de codigo y evitando posibles fallas a futuro
         '''
             @wraps(function)
-            def funcion_decorada(self,*args,**kwargs):
+            def funcion_decorada(self,*args,closing=None,**kwargs):
                 with self._lock:
                     try:
                         self.cursor.execute("select 1")
@@ -39,12 +39,13 @@ class ConexionSQLite():
                         return funcion
                     finally:
                         #Cierra al final de cada metodo
-                        # if close!=None:
-                        #     self.cursor.close()
-                        #     self.conn.close()
-                        #     self.cursor=None
-                        #     self.conn= None
-                        pass    
+                        if closing!=None:
+                            print("closing")
+                            self.cursor.close()
+                            self.conn.close()
+                            self.cursor=None
+                            self.conn= None
+                        
             return funcion_decorada
     
 
