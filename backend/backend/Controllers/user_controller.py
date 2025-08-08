@@ -104,5 +104,15 @@ def user_delete_data_by_id():
         return jsonify(msg=msj),400
     return jsonify(msg=msj),200
     
+@jwt_required()
+def user_rotate_masterpass_and_items_hash():
+    data= request.get_json()
+    user_id=get_jwt_identity()
+    json_data={
+        "masterpass":data.get("masterpass",'')
+    }
 
-    
+    msj,control=ConexionUser.user_change_masterpass_and_every_item_hash(user_id,**json_data)
+    if not control:
+        return jsonify(msg=msj),400
+    return jsonify(msg=msj),200

@@ -81,40 +81,50 @@ class ConexionUserSQLite(ConexionSQLite):
         return "Eliminacion Exitosa",True
 
     ConexionSQLite.check_conn
-    def user_changemasterpass_and_every_item_hash(self,user_id,**kwargs):
-        ''''''
+    def user_change_masterpass_and_every_item_hash(self,user_id,**kwargs):
+        '''Recibe json data con full info de los items\n
+    Retorna String y Boolean'''
         try:
             # Comprobamos la validez de los kwargs suministrados
             msj,control = kwargs_checker(["masterpass"],**kwargs)
             if not control:
-                return False
-            #Obtenemos la masterpass original dle solicitante
+                return msj,False
+            #Obtenemos la masterpass original del solicitante
             masterpass,control=ConexionUser.get_masterpass(user_id)
             if not control:
-                return False
+                return masterpass,False
             masterpass=masterpass[0]
             #Obtenemos todos los datos del usuario
             all_encrypted_user_data,control=ConexionUser.get_all_data(user_id)
+            
             if not control:
-                return False
+                return all_encrypted_user_data,False
             #Desencriptamos toda la data y la guardamos en una variable
             datos_desencriptados=decrypt_all_user_data(masterpass,all_encrypted_user_data)
             #Actualizamos la masterpass
             msj_or_query,valores,control=dynamic_query_generator(4,"users",user_id,**kwargs)
             if not control:
-                return False
+                return msj_or_query,False
+            print(f"Valores  {valores}")
+            print(f"query  {msj_or_query}")
             self.cursor.execute(msj_or_query,valores)
             #Re-encriptamos los registros
+            print(datos_desencriptados)
             for fila in datos_desencriptados:
-                encrypted_json_data=re_encrypt_all_user_data(kwargs["masterpass"],fila)
+                id_item=fila[0]
+                encrypted_json_data=re_encrypt_all_user_data(kwargs["masterpass"],user_id,fila)
                 
-                msj_or_query,valores,control=dynamic_query_generator(2,'data',user_id,**encrypted_json_data)
+                msj_or_query,valores,control=dynamic_query_generator(2,'data',id_item,**encrypted_json_data)
                 print(msj_or_query)
-            
-
+                print(f"Valores  {valores}")
+                print(f"query  {msj_or_query}")
+                self.cursor.execute(msj_or_query,valores)
+                print(self.cursor.rowcount)
+                self.conn.commit()
+            return "",True
         except Exception as e:
             self.conn.rollback()
-            return False
+            return str(e),False
         
 
 ConexionUser= ConexionUserSQLite()

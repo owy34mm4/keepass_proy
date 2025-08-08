@@ -17,15 +17,17 @@ Retorna Arry de Array con los datos desencriptados '''
     except Exception as e:
         return [[str(e)]]
     
-def re_encrypt_all_user_data(new_masterpass,row_data):
+def re_encrypt_all_user_data(new_masterpass,user_id,row_data):
     '''Retorna json con Data encriptada'''
+    print(f"row data --> {row_data}")
     id,title,user_name,password,url,notes=row_data
-    return {
-        "id":id,
+    j_data={
+        "user_id":user_id,
         "title":encriptar(title,new_masterpass),
         "user_name":encriptar(user_name,new_masterpass),
         "password":encriptar(password,new_masterpass),
         "url":encriptar(url,new_masterpass),
         "notes":encriptar(notes,new_masterpass)
     }
+    return j_data
     

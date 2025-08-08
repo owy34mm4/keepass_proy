@@ -11,7 +11,7 @@ Si el {valor_case}==4 entonces retorna consulta de actualizacion masterpass'''
         valores=[]
         #Agregamos el contenido de los **kwargs a las listas
         for clave, valor in kwargs.items():
-            if clave=="item_id":
+            if clave=="user_id":
                 continue
             columnas.append(clave)
             valores.append(valor)
@@ -19,14 +19,16 @@ Si el {valor_case}==4 entonces retorna consulta de actualizacion masterpass'''
         match valor_case:
             case 1:
                 '''Consulta insercion'''
+                columnas.append("user_id")
+                valores.append(kwargs["user_id"])
                 columnas_string=', '.join(columnas)
                 placeholders_string=',  '.join(['?']*len(valores))
                 query_generada=f"insert into {tabla_objetivo} ({columnas_string}) values ({placeholders_string})"
                 return query_generada,valores,True
             case 2:
                 '''Consulta Actualizacion'''
-                valores.append(where)
-                valores.append(kwargs["user_id"])
+                valores.append(int(where))
+                valores.append(int(kwargs["user_id"]))
                 set_clause = ', '.join([f"{col} = ?" for col in columnas])
                 query_generada=f"update {tabla_objetivo} set {set_clause} where id = ? and user_id= ?"
                 return query_generada,valores,True
@@ -45,4 +47,4 @@ Si el {valor_case}==4 entonces retorna consulta de actualizacion masterpass'''
                 return "Valor case no valido, usa los valores establecidos en la documentacion",[], False
 
     except Exception as e:
-        return f"{e}",[],False
+        return f"Error en query gen ->{e}",[],False
