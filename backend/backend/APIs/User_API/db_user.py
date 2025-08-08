@@ -56,7 +56,7 @@ class ConexionUserSQLite(ConexionSQLite):
         msj,control= kwargs_checker(["title","user_name","password","url","notes","user_id","id"],**kwargs)
         if not control:
             return msj,control
-        msj,valores,control=dynamic_query_generator(2,"data",kwargs["id"],**kwargs)
+        msj,valores,control=dynamic_query_generator(2,"data",where=kwargs["id"],**kwargs)
         if not control:
             return msj,control
         print(msj)
@@ -70,14 +70,17 @@ class ConexionUserSQLite(ConexionSQLite):
     Retorna String y Boolean\n
     Recibe un json con la siguente informacion ->KWARGS ---> user_id - item_id
     '''
-        msj,control=kwargs_checker(["item_id","user_id"],**kwargs)
+        msj,control=kwargs_checker(["id","user_id"],**kwargs)
         if not control:
             return msj,control
-        msj,valores,control=dynamic_query_generator(3,"data",where=kwargs["item_id"],**kwargs)
+        msj,valores,control=dynamic_query_generator(3,"data",where=kwargs["id"],**kwargs)
         if not control:
             return msj,False
+        print(valores,msj)
         self.cursor.execute(msj,valores)
+        
         self.conn.commit()
+        print(self.cursor.rowcount)
         return "Eliminacion Exitosa",True
 
     ConexionSQLite.check_conn

@@ -38,7 +38,7 @@ Retorna HTTPResponse'''
                 "notes":encriptar(data.get("notes",''),masterpass),
                 "user_id":user_id
                }
-    msj,control =ConexionUser.add_data(**json_data)
+    msj,control =ConexionUser.add_data(closing=True,**json_data)
     if not control:
         return jsonify(msg=f"Error {msj}"),400
     return jsonify(msg=msj),200
@@ -95,9 +95,9 @@ def user_delete_data_by_id():
     data=request.get_json()
     json_data={
                 "user_id":get_jwt_identity(),
-               "item_id":data.get("item_id",'')
+               "id":data.get("item_id",'')
                }
-    if json_data["item_id"]=='':
+    if json_data["id"]=='':
         return jsonify(msg="No se relacionó un item valido"),400
     msj,control=ConexionUser.delete_data_by_id(closing=True,**json_data)
     if not control:

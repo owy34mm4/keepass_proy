@@ -11,10 +11,11 @@ Si el {valor_case}==4 entonces retorna consulta de actualizacion masterpass'''
         valores=[]
         #Agregamos el contenido de los **kwargs a las listas
         for clave, valor in kwargs.items():
-            if clave=="user_id":
+            if clave=="user_id" or  clave=="id" or clave=='closing':
                 continue
             columnas.append(clave)
             valores.append(valor)
+        
         #Construimos la query
         match valor_case:
             case 1:
@@ -34,7 +35,8 @@ Si el {valor_case}==4 entonces retorna consulta de actualizacion masterpass'''
                 return query_generada,valores,True
             case 3:
                 '''Consulta eliminacion'''
-                valores.append(where)
+                valores.append(kwargs["user_id"])
+                valores.append(kwargs["id"])
                 query_generada= f"delete from {tabla_objetivo} where user_id=? and id=?"
                 return query_generada,valores,True
             case 4:
