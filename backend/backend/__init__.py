@@ -16,7 +16,7 @@ class Config:
     JWT_COOKIE_SECURE = False         # True en producción (https)
     JWT_COOKIE_HTTPONLY = True        # Evita acceso por JS
     JWT_ACCESS_COOKIE_NAME = 'access_token_cookie'
-    JWT_COOKIE_CSRF_PROTECT = True  # ← Desactívalo para pruebas
+    JWT_COOKIE_CSRF_PROTECT = False  # ← Desactívalo para pruebas
     JWT_COOKIE_SAMESITE='None'
 
 jwt= JWTManager()

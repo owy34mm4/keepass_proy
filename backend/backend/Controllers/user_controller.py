@@ -89,3 +89,20 @@ def user_uptade_data_by_id():
         return jsonify(msg=msj),400
 
     return jsonify(msg=msj,data=data),200
+
+@jwt_required()
+def user_delete_data_by_id():
+    data=request.get_json()
+    json_data={
+                "user_id":get_jwt_identity(),
+               "item_id":data.get("item_id",'')
+               }
+    if json_data["item_id"]=='':
+        return jsonify(msg="No se relacionó un item valido"),400
+    msj,control=ConexionUser.delete_data_by_id(**json_data)
+    if not control:
+        return jsonify(msg=msj),400
+    return jsonify(msg=msj),200
+    
+
+    

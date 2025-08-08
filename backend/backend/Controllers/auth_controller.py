@@ -5,7 +5,9 @@ from flask_jwt_extended import create_access_token, set_access_cookies,unset_jwt
 
 def login():
     data = request.get_json()
-    iden,check_login= ConexionAuth.check_login(data["user"],data["psw"])
+    username=data["user"]
+    password=data["psw"]
+    iden,check_login= ConexionAuth.check_login(username,password)
     if not check_login:
         return jsonify(msg="Credenciales no asociadas"),400
     acces_token=create_access_token(identity=str(iden))

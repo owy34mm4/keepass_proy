@@ -12,11 +12,10 @@ class ConexionAuthSQLite(ConexionSQLite):
             self.cursor.execute("select id from users where username=(?) and masterpass=(?)",(user,password))
             ret = self.cursor.fetchall()
             if not ret:
-                return [],False
+                return "",False
             return ret[0][0],True
         except Exception as e:
-            print(e)
-            return [],False
+            return str(e),False
             
 
 ConexionAuth = ConexionAuthSQLite()

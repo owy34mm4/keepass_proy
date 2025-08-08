@@ -10,7 +10,8 @@ class ConexionSQLite():
     Establece Funcionamiento desde el __INIT__'''
     def __init__(self):
         '''Init de la clase padre "ConexionSQLite'''
-        self._lock = threading.Lock()
+        #Bloqueo de hilo REentraante
+        self._lock = threading.RLock()
         self._dbpath=abspath(join(dirname(__file__),'Data','db_pass.db'))
         self.conn=sqlite3.connect(self._dbpath,check_same_thread=False)
         self.cursor=self.conn.cursor()
@@ -38,10 +39,12 @@ class ConexionSQLite():
                         return funcion
                     finally:
                         #Cierra al final de cada metodo
-                        self.cursor.close()
-                        self.conn.close()
-                        self.cursor=None
-                        self.conn= None
+                        # if close!=None:
+                        #     self.cursor.close()
+                        #     self.conn.close()
+                        #     self.cursor=None
+                        #     self.conn= None
+                        pass    
             return funcion_decorada
     
 

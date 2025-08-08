@@ -1,5 +1,7 @@
 from backend.APIs.db_sqlite import ConexionSQLite
-from backend.Middlewares.kwargs_checker.kwargs_checker import kwargs_checker,dynamic_query_generator
+from backend.Middlewares.kwargs_checker.kwargs_checker import kwargs_checker
+from backend.Middlewares.dinamyc_query_generator.dinamyc_query_generator import dynamic_query_generator
+from backend.Middlewares.encrypter.transformer_all_user_data import decrypt_all_user_data,re_encrypt_all_user_data
 
 class ConexionUserSQLite(ConexionSQLite):
     def __init__(self):
@@ -71,8 +73,48 @@ class ConexionUserSQLite(ConexionSQLite):
         msj,control=kwargs_checker(["item_id","user_id"],**kwargs)
         if not control:
             return msj,control
-        msj,valores,control=dynamic_query_generator(3,"data",kwargs["id_usuario"],**kwargs)
+        msj,valores,control=dynamic_query_generator(3,"data",where=kwargs["item_id"],**kwargs)
         if not control:
             return msj,False
-        self.cursor.execute()
+        self.cursor.execute(msj,valores)
+        self.conn.commit()
+        return "Eliminacion Exitosa",True
+
+    ConexionSQLite.check_conn
+    def user_changemasterpass_and_every_item_hash(self,user_id,**kwargs):
+        ''''''
+        try:
+            # Comprobamos la validez de los kwargs suministrados
+            msj,control = kwargs_checker(["masterpass"],**kwargs)
+            if not control:
+                return False
+            #Obtenemos la masterpass original dle solicitante
+            masterpass,control=ConexionUser.get_masterpass(user_id)
+            if not control:
+                return False
+            masterpass=masterpass[0]
+            #Obtenemos todos los datos del usuario
+            all_encrypted_user_data,control=ConexionUser.get_all_data(user_id)
+            if not control:
+                return False
+            #Desencriptamos toda la data y la guardamos en una variable
+            datos_desencriptados=decrypt_all_user_data(masterpass,all_encrypted_user_data)
+            #Actualizamos la masterpass
+            msj_or_query,valores,control=dynamic_query_generator(4,"users",user_id,**kwargs)
+            if not control:
+                return False
+            self.cursor.execute(msj_or_query,valores)
+            #Re-encriptamos los registros
+            for fila in datos_desencriptados:
+                encrypted_json_data=re_encrypt_all_user_data(kwargs["masterpass"],fila)
+                
+                msj_or_query,valores,control=dynamic_query_generator(2,'data',user_id,**encrypted_json_data)
+                print(msj_or_query)
+            
+
+        except Exception as e:
+            self.conn.rollback()
+            return False
+        
+
 ConexionUser= ConexionUserSQLite()
