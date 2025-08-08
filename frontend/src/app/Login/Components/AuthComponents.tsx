@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import AuthService from "@/api/AuthService";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
 
@@ -10,6 +12,7 @@ export function LoginForm() {
     const [mensaje,setMensaje]= useState("");
     const [loading,setLoading]= useState(false);
     const [error,setError]= useState("");
+     const router= useRouter();
 
     const handleLogin = async (e:React.FormEvent)=>{
         e.preventDefault();
@@ -19,7 +22,13 @@ export function LoginForm() {
 
         try{
             const response= await AuthService.login(usuario,contraseña);
-            setMensaje(response.msg || "Login Exitoso");
+            setMensaje(response.msg);
+            if(response.ret){
+               
+                router.push("/User/DashBoard");
+            }
+            setTimeout(()=>{})
+        
         }catch(err:any){
             setError(err.message);
         }finally{
@@ -65,34 +74,41 @@ export function LoginForm() {
   )
 }
 
-export function LogoutButton(){
-    const [loading,setLoading]= useState(false);
-    const [error,setError]= useState("");
-
-    const handleLogout=async()=>{
-        setLoading(true);
-        setError('');
-        try{
-            await AuthService.logout();
-            localStorage.removeItem('token');
-        }catch(error:any){
-            setError(error.message || "Error al cerar sesion");
-        }finally{
-            setLoading(false);
-        }
-    };
-
-    return(
-        <>
-            <button
-            onClick={handleLogout}
-            disabled={loading}
-            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
-            >
-                {loading? 'Cerrando Sesion': 'Cerrar Sesion'}
-            </button>
-            {error && <p className="text-red-600 mt-2">{error}</p>}
-        </>
-    )
+// 🔹 Función que solo hace el logout en el backend y borra token
+export async function logoutUser(): Promise<void> {
+  await AuthService.logout();
+  localStorage.removeItem("token");
 }
 
+// 🔹 Componente con el hook useRouter
+export function LogoutButton() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      await logoutUser();
+      router.push("/"); // Redirección solo aquí
+    } catch (err: any) {
+      setError(err.message || "Error al cerrar sesión");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <button
+        onClick={handleLogout}
+        disabled={loading}
+        className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+      >
+        {loading ? "Cerrando sesión..." : "Cerrar sesión"}
+      </button>
+      {error && <p className="text-red-600 mt-2">{error}</p>}
+    </>
+  );
+}

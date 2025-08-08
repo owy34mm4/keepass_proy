@@ -9,9 +9,9 @@ def login():
     password=data["psw"]
     iden,check_login= ConexionAuth.check_login(username,password)
     if not check_login:
-        return jsonify(msg="Credenciales no asociadas"),400
+        return jsonify(msg="Credenciales no asociadas",ret=False),400
     acces_token=create_access_token(identity=str(iden))
-    resp= make_response(jsonify(acces_token=acces_token, msg = "Inicio Sesion Exitoso"))
+    resp= make_response(jsonify(acces_token=acces_token, msg="Login Exitoso",ret= True))
     set_access_cookies(resp,acces_token)
     return resp
 

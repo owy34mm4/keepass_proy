@@ -10,7 +10,7 @@ export default class AuthService{
                 user,
                 psw
             },{withCredentials:true});
-            return response.data.msg;
+            return response.data;
         }catch (error:any){
             throw new Error(error.response?.data?.mensaje || "Error en el Login")
         }

@@ -1,3 +1,5 @@
+'use client'
+
 import { LoginForm, LogoutButton } from "./Components/AuthComponents";
 
 export default function LoginPage(){
