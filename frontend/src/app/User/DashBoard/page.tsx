@@ -1,15 +1,39 @@
 'use client'
 
 import React, { use } from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Sidebar from './Components/Sidebar'
 import PasswordList, {PasswordItem} from './Components/PasswordList'
 import { LogoutButton } from '@/app/Login/Components/AuthComponents'
+import UserService from '@/api/UserService'
+import Configuration from './Components/ConfigurationSelect/Configuration'
+
 
 const DashBoard: React.FC =()=>{
-    const [selected,setSelected] = useState<string>('')
+    const [selected, setSelected] = useState<string>('');
+    const [passwords, setPasswords] = useState<PasswordItem[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-    const passwords: PasswordItem[] = [
+    useEffect(() => {
+    if (selected === 'passwords') {
+      fetchPasswords();
+    }
+  }, [selected]);
+
+    async function fetchPasswords(){
+    setLoading(true);
+    setError('');
+    try{
+      const data = await UserService.getPasswords()
+      setPasswords(data)
+    } catch(error:any){
+  setError(error.message || "Error al obtener contraseñas");
+    }finally{
+      setLoading(false)
+    }
+    }
+    const passwordsList: PasswordItem[] = [
     { title: "Gmail", user_name: "juan@example.com", password: "1234", url:"gugu",notes:"fsfsf" },
     { title: "Gmail", user_name: "juan@example.com", password: "1234", url:"gugu",notes:"fsfsf" },
     { title: "Gmail", user_name: "juan@example.com", password: "1234", url:"gugu",notes:"fsfsf" }
@@ -17,12 +41,11 @@ const DashBoard: React.FC =()=>{
   const renderContent= ()=>{
     switch(selected){
         case "passwords":
+            
             return <PasswordList passwords={passwords} />
         case "settings":
-            return(
-                 <div className="p-4">
-                    <h2 className="text-2xl font-bold">Configuración</h2>
-                    <p>Opciones de configuración aquí...</p>
+            return(<div>
+                 <Configuration />
                 </div>
             );
         case "logout":

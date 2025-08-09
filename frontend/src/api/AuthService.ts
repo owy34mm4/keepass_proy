@@ -1,5 +1,5 @@
 //Importamos la libreria AXIOS, que nos permite hacer peticiones
-import {axiosAuthInstance} from "./axiosInstances/axiosAuthInstance";
+import {axiosAuthInstance} from "./axiosInstances/axiosInstances";
 
 export default class AuthService{
     private static api=axiosAuthInstance;

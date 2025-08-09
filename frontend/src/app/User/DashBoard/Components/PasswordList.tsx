@@ -21,9 +21,11 @@ const PasswordList: React.FC<PasswordListProps>= ({ passwords}) => {
       <table className="w-full border-collapse">
         <thead>
           <tr className="bg-gray-200">
-            <th className="p-2 border">Servicio</th>
-            <th className="p-2 border">Usuario</th>
-            <th className="p-2 border">Contraseña</th>
+            <th className="p-2 border">title</th>
+            <th className="p-2 border">user_name</th>
+            <th className="p-2 border">password</th>
+            <th className="p-2 border">url</th>
+            <th className="p-2 border">notes</th>
           </tr>
         </thead>
         <tbody>

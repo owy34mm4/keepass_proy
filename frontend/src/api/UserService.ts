@@ -1,27 +1,28 @@
 //Importamos la libreria AXIOS, que nos permite hacer peticiones
-import {axiosUserInstance} from "./axiosInstances/axiosAuthInstance";
+import {axiosUserInstance} from "./axiosInstances/axiosInstances";
+import { PasswordItem } from "@/app/User/DashBoard/Components/PasswordList";
 
-export default class AuthService{
+export default class UserService{
     private static api=axiosUserInstance;
 
-    static async login(usuario:string,contraseña:string){ 
-        try{
-            const response= await this.api.post("/login",{
-                usuario,
-                contraseña
-            });
-            return response.data.msj;
-        }catch (error:any){
-            throw new Error(error.response?.data?.mensaje || "Error en el Login")
-        }
-    }
+   static async getPasswords(): Promise<PasswordItem[]> {
+  const response = await UserService.api.get('/read_all_data', {
+    withCredentials: true,
+  });
 
-    static async logout(){
-        try{
-            const response = await this.api.post("/logout");
-            return response.data.msj
-        }catch(error:any){
-            throw new Error (error.response?.data?.mensaje || "Error al cerrar sesion")
-        }
+  const data = response.data;
+
+  if (data.ret && typeof data.ret === "object") {
+    // Convertir de objeto con claves a array
+    return Object.values(data.ret) as PasswordItem[];
+  }
+
+  return [];
+}
+
+    static async changeMasterpass(masterpass:string):Promise<void> {
+        await UserService.api.put('/change_masterpass',{
+            masterpass},{withCredentials:true}
+        );
     }
 }
