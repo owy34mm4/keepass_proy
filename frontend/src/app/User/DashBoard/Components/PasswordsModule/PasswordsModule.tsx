@@ -116,8 +116,6 @@ const PasswordList: React.FC<PasswordListProps> = ({ passwords, onDelete, onEdit
    * Setea el valor de newPasswordForm a vacio en todas sus entradas
    * */
   const handleAddPassword = () => {
-    console.log(newPasswordForm);
-    // onAdd();
     onAdd(newPasswordForm);
     setShowAddModal(false);
     setNewPasswordForm({ title: "", user_name: "", password: "", url: "", notes: "" })
@@ -204,6 +202,8 @@ const PasswordList: React.FC<PasswordListProps> = ({ passwords, onDelete, onEdit
         isOpen={showEditModal}
         onClose={() => {setEditingId(null);setShowEditModal(false)}}
         password={selectedPassword!}
+        formData={editForm}
+        setFormData={setEditForm}
         onSave={handleSaveEdit}
       />
 

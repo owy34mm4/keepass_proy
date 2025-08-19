@@ -7,12 +7,20 @@ import { PasswordItem } from './PasswordsModule';
 interface EditPasswordModalProps {
   isOpen: boolean;
   onClose: () => void;
+  formData: Partial<PasswordItem>
+  setFormData: React.Dispatch<React.SetStateAction<Partial<PasswordItem>>>
   password: PasswordItem | null; // Cambié esto para poder verificar si `password` es null
   onSave: (updatedPassword: PasswordItem) => void;
 }
 
-const EditPasswordModal: React.FC<EditPasswordModalProps> = ({ isOpen, onClose, password, onSave }) => {
-  const [formData, setFormData] = useState<PasswordItem | null>(null);
+const EditPasswordModal: React.FC<EditPasswordModalProps> = ({ 
+    isOpen,
+    onClose,
+    password,
+    formData,
+    setFormData,
+    onSave }) => {
+  // const [formData, setFormData] = useState<PasswordItem | null>(null);
 
   // Este useEffect se ejecutará cuando el modal se abra y `password` cambie
   useEffect(() => {
@@ -38,8 +46,13 @@ const EditPasswordModal: React.FC<EditPasswordModalProps> = ({ isOpen, onClose, 
   if (!formData) return null;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <h2 className="text-xl font-bold mb-4">Editar Contraseña</h2>
+    <Modal 
+      isOpen={isOpen}
+      onClose={onClose}
+      title='Editar Contraseña'
+      onConfirm={handleSave}
+      confirmText='Guardar Cambios'
+      cancelText='Cancelar'>
       <input
         name="title"
         value={formData.title}
@@ -76,12 +89,7 @@ const EditPasswordModal: React.FC<EditPasswordModalProps> = ({ isOpen, onClose, 
         className="w-full p-2 mb-4 border rounded"
       />
       <div className="flex justify-end gap-2">
-        <button onClick={onClose} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
-          Cancelar
-        </button>
-        <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-          Guardar
-        </button>
+    
       </div>
     </Modal>
   );

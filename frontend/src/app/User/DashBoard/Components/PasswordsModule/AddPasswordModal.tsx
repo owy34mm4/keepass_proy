@@ -34,7 +34,6 @@ const AddPasswordModal: React.FC<AddPasswordModalProps> = ({
 
   const handleAdd = () => {
     onConfirm(newPassword);
-    console.log(newPassword)
     setNewPassword({ title: "", user_name: "", password: "", url: "", notes: "" });
     onClose();
   };
