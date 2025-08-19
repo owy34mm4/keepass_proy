@@ -1,28 +1,45 @@
 //Importamos la libreria AXIOS, que nos permite hacer peticiones
-import {axiosUserInstance} from "./axiosInstances/axiosInstances";
-import { PasswordItem } from "@/app/User/DashBoard/Components/PasswordList";
+import { json } from "stream/consumers";
+import { axiosUserInstance } from "./axiosInstances/axiosInstances";
+import { PasswordItem } from "@/app/User/DashBoard/Components/PasswordsModule/PasswordsModule";
+import { stringify } from "querystring";
 
-export default class UserService{
-    private static api=axiosUserInstance;
+export default class UserService {
+  private static api = axiosUserInstance;
 
-   static async getPasswords(): Promise<PasswordItem[]> {
-  const response = await UserService.api.get('/read_all_data', {
-    withCredentials: true,
-  });
+  static async getPasswords(): Promise<PasswordItem[]> {
+    const response = await UserService.api.get('/read_all_data', {
+      withCredentials: true,
+    });
 
-  const data = response.data;
+    const data = response.data;
 
-  if (data.ret && typeof data.ret === "object") {
-    // Convertir de objeto con claves a array
-    return Object.values(data.ret) as PasswordItem[];
+    if (data.ret && typeof data.ret === "object") {
+      // Convertir de objeto con claves a array
+      return Object.values(data.ret) as PasswordItem[];
+    }
+
+    return [];
+  };
+
+  static async changeMasterpass(masterpass: string): Promise<void> {
+    await UserService.api.put('/change_masterpass', {
+      masterpass
+    }, { withCredentials: true }
+    );
+  };
+
+  static async deletePasswordById (id:number){
+    await UserService.api.delete('/delete_data_by_id',{data:{id},withCredentials:true})
   }
 
-  return [];
-}
+  static async updatePasswordById(id:number,updatedData:any){
+    console.log(id,updatedData)
+    await UserService.api.put('/update_data_by_id',{...updatedData},{withCredentials:true})
+  }
 
-    static async changeMasterpass(masterpass:string):Promise<void> {
-        await UserService.api.put('/change_masterpass',{
-            masterpass},{withCredentials:true}
-        );
-    }
+  static async addPassword(data:any){
+    console.log(data)
+    await UserService.api.post('/add_data',{...data},{withCredentials:true})
+  }
 }

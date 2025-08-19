@@ -11,7 +11,7 @@ class Config:
     load_dotenv()
     SECRET_KEY = getenv('SECRET_KEY')
     JWT_SECRET_KEY = getenv('JWT_SECRET_KEY')
-    JWT_ACCESS_TOKEN_EXPIRES = 600  # 10 minutos
+    JWT_ACCESS_TOKEN_EXPIRES = 6000  # 10 minutos
     JWT_TOKEN_LOCATION = ['cookies']            # ← Obligatorio
     JWT_COOKIE_SECURE = False         # True en producción (https)
     JWT_COOKIE_HTTPONLY = True        # Evita acceso por JS

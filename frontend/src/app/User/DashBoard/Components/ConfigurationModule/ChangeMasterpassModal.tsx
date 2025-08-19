@@ -1,36 +1,38 @@
 import UserService from '@/api/UserService';
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 
-interface changeMasterpassProps{
-    onSucess?:() =>void;
+interface changeMasterpassProps {
+  onSucess?: () => void;
 }
 
-    
 
-export const ChangeMasterpassModal:React.FC<changeMasterpassProps> = ({onSucess}) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [newPass, setNewPass] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState(false);
 
-    const handleConfirm =async ()=>{
-        setLoading(true)
-        try{
-            console.log(newPass)
-            await UserService.changeMasterpass(newPass)
-            setSuccess(true);
-            setIsModalOpen(true);
-            setNewPass('');
-            if(onSucess)onSucess();
-        }catch(error:any){
-            setError(error.message || "Error al cambiar la masterpassword")
-        }finally{
-            setLoading(false)
-        }
-    };
+export const ChangeMasterpassModal: React.FC<changeMasterpassProps> = ({ onSucess }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newPass, setNewPass] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
-   return (
+  const handleConfirm = async () => {
+    setLoading(true)
+    try {
+      await UserService.changeMasterpass(newPass)
+      setSuccess(true);
+      setIsModalOpen(true);
+      setNewPass('');
+      if (onSucess) {
+        onSucess();
+        setIsModalOpen(false);
+      };
+    } catch (error: any) {
+      setError(error.message || "Error al cambiar la masterpassword")
+    } finally {
+      setLoading(false)
+    }
+  };
+
+  return (
     <div>
       <button
         onClick={() => setIsModalOpen(true)}

@@ -75,6 +75,7 @@ def user_update_data_by_id():
     masterpass=masterpass[0]
 
     data = request.get_json()
+    print(data)
     json_data={
                 "title":encriptar(data.get("title"),masterpass),
                 "user_name":encriptar(data.get("user_name"),masterpass),
@@ -82,7 +83,7 @@ def user_update_data_by_id():
                 "url":encriptar(data.get("url"),masterpass),
                 "notes":encriptar(data.get("notes"),masterpass),
                 "user_id":user_id,
-                "id":data.get("item_id")
+                "id":data.get("id")
                }
     msj,control=ConexionUser.update_data_by_id(closing=True,**json_data)
     if not control:
@@ -95,7 +96,7 @@ def user_delete_data_by_id():
     data=request.get_json()
     json_data={
                 "user_id":get_jwt_identity(),
-               "id":data.get("item_id",'')
+               "id":data.get("id",'')
                }
     if json_data["id"]=='':
         return jsonify(msg="No se relacionó un item valido"),400

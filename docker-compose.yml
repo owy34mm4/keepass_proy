@@ -31,7 +31,7 @@ services:
       context: ./backend
     #Establecemos los volumenes de este servicio{backend}-> Homologando || Ruta local:Ruta dentro del contenedor
     volumes:
-      - ./backend/backend/APIs/Data/db_pass.db:/backend/backend/APIs/Data/db_pass.db
+      - ./backend/backend/APIs/Data/db_pass.db:/app/backend/APIs/Data/db_pass.db
     #Especificamos la redireccion de puertos del servicio{backend}
     ports:
       - "5000:5000"
