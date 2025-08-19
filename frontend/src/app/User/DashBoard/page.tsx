@@ -34,6 +34,7 @@ const DashBoard: React.FC = () => {
   };
 
   async function handleEdit(id: number, data: Partial<PasswordItem>) {
+    console.log(id,data);
     await UserService.updatePasswordById(id, data);
     fetchPasswords();
   };

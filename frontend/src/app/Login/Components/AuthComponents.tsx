@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from "react";
+import Loader from "@/app/Components/Loader";
 import AuthService from "@/api/AuthService";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -38,6 +39,9 @@ export function LoginForm() {
 
   return (
     <>
+      {/*loader global */}
+      {loading && <Loader message="Iniciando Sesion" />}
+
       <form onSubmit={handleLogin} className="max-w-md mx-auto p-4 border rounded shadow space-y-4">
         <h2 className="text.xl font-bold">Iniciar Sesion</h2>
 
@@ -70,9 +74,8 @@ export function LoginForm() {
         {mensaje && <p className="text-green-600">{mensaje}</p>}
         {error && <p className="text-green-600">{error}</p>}
       </form>
-
     </>
-  )
+  );
 }
 
 // 🔹 Función que solo hace el logout en el backend y borra token

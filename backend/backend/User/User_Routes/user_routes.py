@@ -1,5 +1,5 @@
 from flask import Blueprint
-from backend.Controllers.user_controller import user_add_data,user_read_all_data,user_update_data_by_id,user_delete_data_by_id,user_rotate_masterpass_and_items_hash
+from backend.backend.User.User_Controller.user_controller import user_add_data,user_read_all_data,user_update_data_by_id,user_delete_data_by_id,user_rotate_masterpass_and_items_hash
 
 user_bp= Blueprint('user',__name__)
 

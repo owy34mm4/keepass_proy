@@ -2,8 +2,8 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from os import getenv
-from backend.Routes.auth_routes import auth_bp
-from backend.Routes.user_routes import user_bp
+from backend.backend.Auth.Auth_Routes.auth_routes import auth_bp
+from backend.backend.User.User_Routes.user_routes import user_bp
 from dotenv import load_dotenv
 
 class Config:

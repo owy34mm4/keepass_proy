@@ -1,4 +1,4 @@
-from backend.APIs.Auth_API.db_auth import ConexionAuth
+from backend.Auth.Auth_DB.db_auth import ConexionAuth
 from flask import request, jsonify, make_response
 from flask_jwt_extended import create_access_token, set_access_cookies,unset_jwt_cookies, jwt_required, get_jwt_identity
 

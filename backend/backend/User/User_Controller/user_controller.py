@@ -1,4 +1,4 @@
-from backend.APIs.User_API.db_user import ConexionUser 
+from backend.User.User_DB.db_user import ConexionUser 
 from backend.Middlewares.encrypter.encrypter_lib import encriptar, desencriptar
 from backend.Middlewares.cursor_to_dict.cursor_to_dict import to_dict
 

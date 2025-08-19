@@ -10,7 +10,7 @@ interface EditPasswordModalProps {
   formData: Partial<PasswordItem>
   setFormData: React.Dispatch<React.SetStateAction<Partial<PasswordItem>>>
   password: PasswordItem | null; // Cambié esto para poder verificar si `password` es null
-  onSave: (updatedPassword: PasswordItem) => void;
+  onSave: (updatedPassword: Partial<PasswordItem>) => void;
 }
 
 const EditPasswordModal: React.FC<EditPasswordModalProps> = ({ 
