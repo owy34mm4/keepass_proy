@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import Sidebar from './Components/Sidebar'
 import Loader from '@/app/Components/Loader'
 import PasswordList, { PasswordItem } from './Components/PasswordsModule/PasswordsModule'
-import { LogoutButton } from '@/app/Login/Components/AuthComponents'
+import { LogoutButton } from '@/app/Auth/Components/AuthComponents'
 import UserService from '@/api/UserService'
 import Configuration from './Components/ConfigurationModule/ConfigurationModule'
 

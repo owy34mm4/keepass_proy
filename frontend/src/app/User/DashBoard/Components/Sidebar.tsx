@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { LogoutButton } from '@/app/Login/Components/AuthComponents';
+import { LogoutButton } from '@/app/Auth/Components/AuthComponents';
 
 interface SideBarProps {
   onSelect: (option: string) => void;

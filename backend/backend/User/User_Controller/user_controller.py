@@ -1,10 +1,17 @@
+#Objeto para acceder a la BD
 from backend.User.User_DB.db_user import ConexionUser 
+#Middlewares encargados de encrptar y desencriptar
 from backend.Middlewares.encrypter.encrypter_lib import encriptar, desencriptar
+from backend.Middlewares.encrypter.transformer_all_user_data import decrypt_all_user_data
+#Middleware para convertir formato de datos
 from backend.Middlewares.cursor_to_dict.cursor_to_dict import to_dict
-
-from flask import request, jsonify
+#Middleware para los Excel de descarga
+from backend.Middlewares.export_user_data.parquet_generator.generate_data_parquet import generate_data_parquet
+from backend.Middlewares.export_user_data.parquet_generator.delete_data_parquet import delete_data_parquet
+from backend.Middlewares.export_user_data.parquet_to_excel_in_memory.parquet_to_excel_in_memory import parquet_to_excel_in_memory
+#Flask
+from flask import request, jsonify, send_file
 from flask_jwt_extended import jwt_required, get_jwt_identity
-
 
 
 @jwt_required()
@@ -117,3 +124,29 @@ def user_rotate_masterpass_and_items_hash():
     if not control:
         return jsonify(msg=msj),400
     return jsonify(msg=msj),200
+
+@jwt_required()
+def user_download_data():
+    user_id=get_jwt_identity()
+    cursor,control=ConexionUser.get_all_data(user_id)
+    if not control:
+        return jsonify(msg=cursor),400
+    masterpass,control=ConexionUser.get_masterpass(user_id)
+    if not control:
+        return jsonify(msg=masterpass[0]),400
+    masterpass=masterpass[0]
+    data_matrix=decrypt_all_user_data(masterpass,cursor)
+    msj,control,abspath_file=generate_data_parquet(data_matrix)
+    if not control:
+        return jsonify(msg=msj),400
+    excel_buffer,control= parquet_to_excel_in_memory(abspath_file)
+    if not control:
+        return jsonify(msg=excel_buffer),400
+    msj,control=delete_data_parquet(abspath_file)
+    if not control:
+        return jsonify(msg=msj),400
+    return send_file(excel_buffer,
+                     mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                     as_attachment=True,
+                     download_name='data_exported.xlsx'),200
+

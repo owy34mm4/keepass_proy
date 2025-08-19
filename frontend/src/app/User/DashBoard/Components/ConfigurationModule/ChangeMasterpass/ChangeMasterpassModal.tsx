@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import Loader from '@/app/Components/Loader'
 import UserService from '@/api/UserService'
 import { useRouter } from 'next/navigation'
-import { logoutUser } from '@/app/Login/Components/AuthComponents'
+import { logoutUser } from '@/app/Auth/Components/AuthComponents'
 
 interface ChangeMasterpassModalProps {
     isModalOpen: boolean,

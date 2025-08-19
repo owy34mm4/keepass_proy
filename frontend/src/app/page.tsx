@@ -11,7 +11,7 @@ export default function Home() {
         <thead className="border-2">
           <th>Inicio Seison</th>
         </thead>
-        <tr><Link href="/Login">Link</Link></tr>
+        <tr><Link href="/Auth/Login">Link</Link></tr>
       </table>
     </main>
   );

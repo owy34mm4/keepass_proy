@@ -85,7 +85,7 @@ class ConexionUserSQLite(ConexionSQLite):
 
     ConexionSQLite.check_conn
     def user_change_masterpass_and_every_item_hash(self,user_id,**kwargs):
-        '''Recibe json data con full info de los items\n
+        '''Recibe json data con la nueva masterpass\n
     Retorna String y Boolean'''
         try:
             # Comprobamos la validez de los kwargs suministrados
@@ -97,9 +97,8 @@ class ConexionUserSQLite(ConexionSQLite):
             if not control:
                 return masterpass,False
             masterpass=masterpass[0]
-            #Obtenemos todos los datos del usuario
+            #Obtenemos todos los datos encriptados del usuario
             all_encrypted_user_data,control=ConexionUser.get_all_data(user_id)
-            
             if not control:
                 return all_encrypted_user_data,False
             #Desencriptamos toda la data y la guardamos en una variable
@@ -108,20 +107,15 @@ class ConexionUserSQLite(ConexionSQLite):
             msj_or_query,valores,control=dynamic_query_generator(4,"users",user_id,**kwargs)
             if not control:
                 return msj_or_query,False
-            print(f"Valores  {valores}")
-            print(f"query  {msj_or_query}")
             self.cursor.execute(msj_or_query,valores)
             #Re-encriptamos los registros
-            print(datos_desencriptados)
             for fila in datos_desencriptados:
                 id_item=fila[0]
                 encrypted_json_data=re_encrypt_all_user_data(kwargs["masterpass"],user_id,fila)
                 
                 msj_or_query,valores,control=dynamic_query_generator(2,'data',id_item,**encrypted_json_data)
-                print(msj_or_query)
-                print(f"Valores  {valores}")
-                print(f"query  {msj_or_query}")
                 self.cursor.execute(msj_or_query,valores)
+                #Imprimimos la cantidad de filas afectadas por la ultima ejecucion del cursor
                 print(self.cursor.rowcount)
                 self.conn.commit()
             return "",True

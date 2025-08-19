@@ -20,6 +20,7 @@ class ConexionSQLite():
     @staticmethod
     def check_conn(function):
             '''Decorador que engloba multifuncion\n
+        Sí se le pasa el kwarg {closing} con valor TRUE a la funcion decorada este se encarga de cerrar la conexion al finalizar el metodo
         -Establece la creacion y cierre de la conexion en cada metodo\n
         -Establece el bloqueo de hilo durante la ejecucion\n
         Ahorrando lineas de codigo y evitando posibles fallas a futuro
@@ -38,7 +39,7 @@ class ConexionSQLite():
                         funcion= function(self,*args,**kwargs)
                         return funcion
                     finally:
-                        #Cierra al final de cada metodo
+                        #Cierra al final de la ejecucion
                         if closing!=None:
                             print("closing")
                             self.cursor.close()

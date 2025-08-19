@@ -31,15 +31,22 @@ export default class UserService {
 
   static async deletePasswordById (id:number){
     await UserService.api.delete('/delete_data_by_id',{data:{id},withCredentials:true})
-  }
+  };
 
   static async updatePasswordById(id:number,updatedData:any){
     console.log(id,updatedData)
     await UserService.api.put('/update_data_by_id',{...updatedData},{withCredentials:true})
-  }
+  };
 
   static async addPassword(data:any){
     console.log(data)
     await UserService.api.post('/add_data',{...data},{withCredentials:true})
-  }
+  };
+
+  static async downloadData(){
+    const response = await UserService.api.get('/download_data',{withCredentials:true,responseType:'blob'})
+    const data = response.data
+    return data
+  };
+  
 }
