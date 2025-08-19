@@ -1,5 +1,5 @@
 from flask import Blueprint
-from backend.backend.Auth.Auth_Controller.auth_controller import login, protegido,logout
+from backend.Auth.Auth_Controller.auth_controller import login, protegido,logout
 
 auth_bp= Blueprint('auth',__name__)
 

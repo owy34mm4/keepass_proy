@@ -40,7 +40,7 @@ export function LoginForm() {
   return (
     <>
       {/*loader global */}
-      {loading && <Loader message="Iniciando Sesion" />}
+      {loading && <Loader message="Iniciando Sesion ..." />}
 
       <form onSubmit={handleLogin} className="max-w-md mx-auto p-4 border rounded shadow space-y-4">
         <h2 className="text.xl font-bold">Iniciar Sesion</h2>
@@ -81,7 +81,7 @@ export function LoginForm() {
 // 🔹 Función que solo hace el logout en el backend y borra token
 export async function logoutUser(): Promise<void> {
   await AuthService.logout();
-  // localStorage.removeItem("token");
+  localStorage.removeItem("token");
 }
 
 // 🔹 Componente con el hook useRouter
@@ -105,12 +105,14 @@ export function LogoutButton() {
 
   return (
     <>
+      {/*loader global */}
+      {loading && <Loader message="Cerrando Sesion ..." />}
       <button
         onClick={handleLogout}
         disabled={loading}
         className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
       >
-        {loading ? "Cerrando sesión..." : "Cerrar sesión"}
+        Cerrar Sesion
       </button>
       {error && <p className="text-red-600 mt-2">{error}</p>}
     </>

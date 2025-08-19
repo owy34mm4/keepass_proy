@@ -3,6 +3,7 @@
 import React, { use } from 'react'
 import { useState, useEffect } from 'react'
 import Sidebar from './Components/Sidebar'
+import Loader from '@/app/Components/Loader'
 import PasswordList, { PasswordItem } from './Components/PasswordsModule/PasswordsModule'
 import { LogoutButton } from '@/app/Login/Components/AuthComponents'
 import UserService from '@/api/UserService'
@@ -26,13 +27,12 @@ const DashBoard: React.FC = () => {
     } finally {
       setLoading(false)
     }
-  }
+  };
 
   async function handleDelete(id: number) {
     await UserService.deletePasswordById(id);
     fetchPasswords();
   };
-
   async function handleEdit(id: number, data: Partial<PasswordItem>) {
     console.log(id,data);
     await UserService.updatePasswordById(id, data);
@@ -53,7 +53,7 @@ const DashBoard: React.FC = () => {
   const renderContent = () => {
     switch (selected) {
       case "passwords":
-        return loading ? "Cargando..." : <PasswordList passwords={passwords} onDelete={handleDelete} onEdit={handleEdit} onAdd={handleAdd} />
+        return loading ? <Loader message='Cargando Contraseñas ...'/> : <PasswordList passwords={passwords} onDelete={handleDelete} onEdit={handleEdit} onAdd={handleAdd} />
       case "settings":
         return <Configuration />
       case "logout":

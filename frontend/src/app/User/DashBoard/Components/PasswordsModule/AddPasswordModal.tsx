@@ -19,14 +19,6 @@ const AddPasswordModal: React.FC<AddPasswordModalProps> = ({
   setNewPassword,
   onConfirm,
 }) => {
-  // const [newPassword, setNewPassword] = useState<Partial<PasswordItem>>({
-  //   title: "",
-  //   user_name: "",
-  //   password: "",
-  //   url: "",
-  //   notes: "",
-  // });
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setNewPassword((prev) => ({ ...prev, [name]: value }));
