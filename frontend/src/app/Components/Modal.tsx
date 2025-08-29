@@ -1,6 +1,6 @@
 'use client';
 
-import React, { JSX } from 'react';
+import React from 'react';
 
 interface ModalProps {
   isOpen: boolean;

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { JSX, use, useState } from 'react'
+import React, { useState } from 'react'
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import AddPasswordModal from './AddPasswordModal';
 import EditPasswordModal from './EditPasswordModal';

@@ -4,12 +4,12 @@ import { LoginForm } from "../Components/AuthComponents";
 
 export default function LoginPage() {
     return (
-        <main
+        <div
             className="min-h-screen flex items-center justify-center bg-gray-100"
         >
             <LoginForm />
 
-        </main>
+        </div>
     );
 
 }

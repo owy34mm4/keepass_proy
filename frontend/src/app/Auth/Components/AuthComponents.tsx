@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Loader from "@/app/Components/Loader";
 import AuthService from "@/api/AuthService";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export function LoginForm() {

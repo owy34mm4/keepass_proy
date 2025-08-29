@@ -1,6 +1,6 @@
 'use client'
 
-import React, { use } from 'react'
+import React from 'react'
 import { useState, useEffect } from 'react'
 import Sidebar from './Components/Sidebar'
 import Loader from '@/app/Components/Loader'
@@ -66,9 +66,9 @@ const DashBoard: React.FC = () => {
   return (
     <div className="flex h-screen">
       <Sidebar onSelect={setSelected} />
-      <main className="flex-1 bg-gray-100 overflow-auto">
+      <div className="flex-1 bg-gray-100 overflow-auto">
         {renderContent()}
-      </main>
+      </div>
     </div>
   );
 }
