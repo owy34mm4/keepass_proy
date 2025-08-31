@@ -11,7 +11,8 @@ class Config:
     load_dotenv()
     SECRET_KEY = getenv('SECRET_KEY')
     JWT_SECRET_KEY = getenv('JWT_SECRET_KEY')
-    JWT_ACCESS_TOKEN_EXPIRES = 6000  # 10 minutos
+    print(f"ENV -{SECRET_KEY}")
+    JWT_ACCESS_TOKEN_EXPIRES = 600  # 10 minutos
     JWT_TOKEN_LOCATION = ['cookies']            # ← Obligatorio
     JWT_COOKIE_SECURE = False         # True en producción (https)
     JWT_COOKIE_HTTPONLY = True        # Evita acceso por JS
@@ -32,8 +33,8 @@ en esta funcion es donde se relaiconan todas las configuraciones e inicializacio
                 "http://frontend:3000"
                   ],
          supports_credentials=True,
-         expose_headers=True,
-         allow_headers="*",
+         expose_headers=["Content-Type","Authorization"],
+         allowed_headers=["Content-Type","Authorization"],
          send_wildcard=True)
     jwt.init_app(app)
     app.register_blueprint(auth_bp, url_prefix='/auth')

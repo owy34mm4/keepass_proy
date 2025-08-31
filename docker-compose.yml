@@ -3,14 +3,17 @@ services:
     container_name: Frontend_Keepass_pry
     build:
       context: ./frontend
+      #Pasamos valores como argumentos en lac onstruccion de la imagen
+      args:
+        # Usamos el nombre del servicio `backend` en la URL porque están en la misma red
+        - NEXT_PUBLIC_AUTH_API_URL=http://localhost:3000/api/auth
+        - NEXT_PUBLIC_USER_API_URL=http://localhost:3000/api/user
+
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     depends_on:
       - backend
-    environment:
-      # Usamos el nombre del servicio `backend` en la URL porque están en la misma red
-      - NEXT_PUBLIC_AUTH_API_URL=http://backend:5000/auth
-      - NEXT_PUBLIC_USER_API_URL=http://backend:5000/user
+    
     networks:
       - mi_red
 
@@ -18,11 +21,14 @@ services:
     container_name: Backend_Keepass_pry
     build:
       context: ./backend
+      args:
+        - SECRET_KEY=MY_SECRET_KEY
+        - JWT_SECRET_KEY=MY_JWT_SECRET_KEY
     volumes:
       # Montamos SOLO la base de datos (principio de menor privilegio)
-      - ./backend/backend/APIs/Data/db_pass.db:/app/backend/APIs/Data/db_pass.db
+      - ./backend/backend/APIs/Data:/app/backend/APIs/Data
     ports:
-      - "5000:5000"
+      - "127.0.0.1:5000:5000"
     networks:
       - mi_red
     # Seguridad: evitar privilegios extra
@@ -32,7 +38,7 @@ services:
     read_only: true
     tmpfs:
       - /tmp
-
+      
 networks:
   mi_red:
     driver: bridge

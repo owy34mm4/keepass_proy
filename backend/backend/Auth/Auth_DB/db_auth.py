@@ -7,7 +7,7 @@ class ConexionAuthSQLite(ConexionSQLite):
     @ConexionSQLite.check_conn
     def check_login(self,user,password):
         '''Comprueba login\n
-    Retorna [Array] , Boolean'''
+    Retorna el id del user , Boolean'''
         try:
             self.cursor.execute("select id from users where username=(?) and masterpass=(?)",(user,password))
             ret = self.cursor.fetchall()

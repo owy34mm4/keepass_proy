@@ -38,6 +38,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # -------------------------------
 WORKDIR /app
 
+ARG SECRET_KEY
+ARG JWT_SECRET_KEY
+
+ENV SECRET_KEY=${SECRET_KEY}
+ENV JWT_SECRET_KEY=${JWT_SECRET_KEY}
+
 # -------------------------------
 # Instalar dependencias de Python
 # -------------------------------
@@ -45,6 +51,7 @@ WORKDIR /app
 # no reinstala dependencias desde cero).
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
 
 # -------------------------------
 # Copiar el proyecto
@@ -56,12 +63,13 @@ COPY . .
 # Ajustar permisos
 # -------------------------------
 RUN chown -R appuser:appgroup /app
+RUN chown -R appuser:appgroup /app/backend/APIs/Data
 
 # -------------------------------
 # Cambiar usuario
 # -------------------------------
 # Desde aquí todo corre como usuario no-root.
-USER appuser
+#USER appuser
 
 # -------------------------------
 # Exponer puerto
