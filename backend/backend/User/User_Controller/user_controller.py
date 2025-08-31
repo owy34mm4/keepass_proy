@@ -6,6 +6,7 @@ from backend.Middlewares.encrypter.transformer_all_user_data import decrypt_all_
 #Middleware para convertir formato de datos
 from backend.Middlewares.cursor_to_dict.cursor_to_dict import to_dict
 #Middleware para los Excel de descarga
+from backend.Middlewares.kwargs_checker.kwargs_checker import kwargs_checker
 from backend.Middlewares.export_user_data.parquet_generator.generate_data_parquet import generate_data_parquet
 from backend.Middlewares.export_user_data.parquet_generator.delete_data_parquet import delete_data_parquet
 from backend.Middlewares.export_user_data.parquet_to_excel_in_memory.parquet_to_excel_in_memory import parquet_to_excel_in_memory
@@ -22,15 +23,9 @@ Encripta los datos recibidos en texto plano, usando la masterpass\n
 Retorna HTTPResponse'''
     user_id=get_jwt_identity()
     data = request.get_json()
-    allowed_data=["title","user_name","password","url","notes"]
-    max_data=5
-    #Comprobamos que no haya mayor cantidad de data que los esperados
-    if len(data)>max_data:
-        return jsonify(msg="Argumentos no esperados"),400
-    #Comprobamos que los data sí sean los esperados
-    for k,v in data.items():
-        if not k in allowed_data:
-            return jsonify(f"Argumento '{k}' invalido"),400
+    msj, control =kwargs_checker(["title","user_name","password","url","notes"],**data)
+    if not control:
+        return jsonify(msg=msj),400
               
     masterpass,control=ConexionUser.get_masterpass(user_id,closing=True)
     if not control:
