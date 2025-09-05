@@ -1,3 +1,5 @@
+from backend.Logger.LoggerUtil import Logger
+
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
@@ -14,6 +16,7 @@ def generate_data_parquet(tuple_array_info):
         ruta_parquet_generado = abspath(join(dirname(__file__),"data_exported.parquet"))
         return "Creacion de Excel Exitosa", True, str(ruta_parquet_generado)
     except Exception as e:
+        Logger.generate_log_error(f"err /mdlwr/exprt_usr_dt/gnrt_data_parquet -- receives{tuple_array_info}|| {e}")
         return str(e),False,str('')
     
 

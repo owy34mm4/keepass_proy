@@ -1,3 +1,5 @@
+from backend.Logger.LoggerUtil import Logger
+
 def dynamic_query_generator(valor_case,tabla_objetivo,where=None,**kwargs):
     '''Recibe un valor de matchCase, el nombre de la tabla objetivo,y el valor establecido para el where(edicion), junto al json de datos a integrar en la consulta\n
 Retorna String, Array y Boolean\n
@@ -49,4 +51,6 @@ Si el {valor_case}==4 entonces retorna consulta de actualizacion masterpass'''
                 return "Valor case no valido, usa los valores establecidos en la documentacion",[], False
 
     except Exception as e:
-        return f"Error en query gen ->{e}",[],False
+        string_error=f"Error en query gen ->{e}"
+        Logger.generate_log_error(string_error)
+        return string_error,[],False

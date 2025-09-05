@@ -1,6 +1,7 @@
 venv
 __pycache__/
 
+LogsDir/*
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
@@ -35,3 +36,4 @@ frontend/.vercel
 frontend/# typescript
 frontend/*.tsbuildinfo
 frontend/next-env.d.ts
+

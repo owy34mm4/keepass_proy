@@ -1,3 +1,5 @@
+from backend.Logger.LoggerUtil import Logger
+
 from io import BytesIO
 import pandas as pd
 from os import remove
@@ -15,6 +17,7 @@ def parquet_to_excel_in_memory(parquet_archive):
         remove(parquet_archive)
         return excel_buffer,True
     except Exception as e:
+        Logger.generate_log_error(f"err /mdlw/exprt_usr_dt/parquet_to_excel_in_memory-- receives{parquet_archive} ||| {str(e)}")
         return str(e),False
 
     

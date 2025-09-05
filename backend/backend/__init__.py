@@ -1,3 +1,5 @@
+from backend.Logger.LoggerUtil import error_logs_wrapper
+
 from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
@@ -22,6 +24,7 @@ class Config:
 
 jwt= JWTManager()
 
+@error_logs_wrapper
 def crear_app():
     '''Funcion inicializadora de proyecto\n
 Crea un objeto app(Flask) el cual contiene todo el aplicativo\n

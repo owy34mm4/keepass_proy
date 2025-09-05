@@ -1,3 +1,4 @@
+from backend.Logger.LoggerUtil import error_logs_wrapper
 #Objeto para acceder a la BD
 from backend.User.User_DB.db_user import ConexionUser 
 #Middlewares encargados de encrptar y desencriptar
@@ -14,7 +15,7 @@ from backend.Middlewares.export_user_data.parquet_to_excel_in_memory.parquet_to_
 from flask import request, jsonify, send_file
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-
+@error_logs_wrapper
 @jwt_required()
 def user_add_data():
     '''Perteneciente al controlador de usuario\n
@@ -45,6 +46,7 @@ Retorna HTTPResponse'''
         return jsonify(msg=f"Error {msj}"),400
     return jsonify(msg=msj),200
 
+@error_logs_wrapper
 @jwt_required()
 def user_read_all_data():
     user_id = get_jwt_identity()
@@ -67,7 +69,8 @@ def user_read_all_data():
             data[tupla][dato]=desencriptar(data[tupla][dato],masterpass)          
     ret = to_dict(campos,data)
     return jsonify(msg="Fetch Exitoso", ret = ret)
-    
+
+@error_logs_wrapper    
 @jwt_required()
 def user_update_data_by_id():
     user_id=get_jwt_identity()
@@ -93,6 +96,7 @@ def user_update_data_by_id():
 
     return jsonify(msg=msj,data=data),200
 
+@error_logs_wrapper
 @jwt_required()
 def user_delete_data_by_id():
     data=request.get_json()
@@ -106,7 +110,8 @@ def user_delete_data_by_id():
     if not control:
         return jsonify(msg=msj),400
     return jsonify(msg=msj),200
-    
+
+@error_logs_wrapper    
 @jwt_required()
 def user_rotate_masterpass_and_items_hash():
     data= request.get_json()
@@ -120,6 +125,7 @@ def user_rotate_masterpass_and_items_hash():
         return jsonify(msg=msj),400
     return jsonify(msg=msj),200
 
+@error_logs_wrapper
 @jwt_required()
 def user_download_data():
     user_id=get_jwt_identity()

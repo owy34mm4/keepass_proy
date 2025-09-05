@@ -1,3 +1,4 @@
+from backend.Logger.LoggerUtil import Logger, error_logs_wrapper
 from backend.Middlewares.encrypter.encrypter_lib import desencriptar,encriptar
 
 def decrypt_all_user_data(masterpass,tuple_array_info):
@@ -15,8 +16,10 @@ Retorna Arry de Array con los datos desencriptados '''
             datos_desencriptados.append((id_item,title,user_name,password,url,notes))
         return datos_desencriptados
     except Exception as e:
+        Logger.generate_log_error(f"Error en middleware/encrypter/tranformer_all_usr_dt/decrypt/all_usr/dt||| {str(e)}")
         return [[str(e)]]
-    
+
+@error_logs_wrapper
 def re_encrypt_all_user_data(new_masterpass,user_id,row_data):
     '''Retorna json con Data encriptada'''
     print(f"row data --> {row_data}")

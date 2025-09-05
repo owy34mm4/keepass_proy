@@ -1,3 +1,6 @@
+from backend.Logger.LoggerUtil import error_logs_wrapper
+
+@error_logs_wrapper
 def kwargs_checker(lista_kwargs_esperados,**kwargs):
     '''Recibe una lista[Array] con los nombres de las columans esperadas en la consulta, Tambien recibe el json de la consulta\n
 Retorna String y Boolean'''

@@ -1,8 +1,9 @@
 from backend.Auth.Auth_DB.db_auth import ConexionAuth
+from backend.Logger.LoggerUtil import error_logs_wrapper
 from flask import request, jsonify, make_response
 from flask_jwt_extended import create_access_token, set_access_cookies,unset_jwt_cookies, jwt_required, get_jwt_identity
 
-
+@error_logs_wrapper
 def login():
     data = request.get_json()
     username=data["user"]
@@ -15,12 +16,13 @@ def login():
     set_access_cookies(resp,acces_token)
     return resp
 
+@error_logs_wrapper
 def logout():
     resp= make_response(jsonify(msg="Sesion Cerrada"))
     unset_jwt_cookies(resp)
     return resp
 
-
+@error_logs_wrapper
 @jwt_required()
 def protegido():
     identidad = get_jwt_identity()

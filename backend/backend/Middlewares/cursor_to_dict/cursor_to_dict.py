@@ -1,3 +1,6 @@
+from backend.Logger.LoggerUtil import error_logs_wrapper 
+
+@error_logs_wrapper
 def to_dict(lista_campos,retorno_cursor):
     '''Recibe una lista[Array] en la cual se contienen los campos esperados, tambien espera una Lista de tuplas [()] con el contenido retorno de un cursor.fetchall() desencriptado
 \nRetorna un diccionario compuesto por el retorno del cursor, organizado en formato k,v'''

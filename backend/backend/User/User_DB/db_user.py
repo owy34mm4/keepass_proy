@@ -1,3 +1,4 @@
+from backend.Logger.LoggerUtil import error_logs_wrapper, Logger
 from backend.APIs.db_sqlite import ConexionSQLite
 from backend.Middlewares.kwargs_checker.kwargs_checker import kwargs_checker
 from backend.Middlewares.dinamyc_query_generator.dinamyc_query_generator import dynamic_query_generator
@@ -7,6 +8,7 @@ class ConexionUserSQLite(ConexionSQLite):
     def __init__(self):
         super().__init__()
     
+    @error_logs_wrapper
     @ConexionSQLite.check_conn
     def get_masterpass(self,id):
         '''Retorna la Array[Masterpass] y boolean'''
@@ -19,6 +21,7 @@ class ConexionUserSQLite(ConexionSQLite):
         except Exception as e:
             return [],False
 
+    @error_logs_wrapper
     @ConexionSQLite.check_conn 
     def add_data(self,**kwargs):
         '''Retorna String y Boolean\n
@@ -35,6 +38,7 @@ class ConexionUserSQLite(ConexionSQLite):
         self.conn.commit()
         return "Insercion Exitosa",True
     
+    @error_logs_wrapper
     @ConexionSQLite.check_conn
     def get_all_data(self,user_id):
         '''Retorna Array de Tupla [()] y Boolean\n
@@ -48,6 +52,7 @@ class ConexionUserSQLite(ConexionSQLite):
         except Exception as e:
             return [(e)],False
 
+    @error_logs_wrapper
     @ConexionSQLite.check_conn
     def update_data_by_id(self,**kwargs):
         '''Actualiza los datos de un item, filtrando por id e id_usuario\n
@@ -64,6 +69,7 @@ class ConexionUserSQLite(ConexionSQLite):
         self.conn.commit()
         return "Insercion Exitosa", True
 
+    @error_logs_wrapper
     @ConexionSQLite.check_conn
     def delete_data_by_id(self,**kwargs):
         '''Elimina los datos de un item, a través de su id y el id del usuario\n
@@ -121,6 +127,7 @@ class ConexionUserSQLite(ConexionSQLite):
             return "",True
         except Exception as e:
             self.conn.rollback()
+            Logger.generate_log_error(f"Error in the change masterpass function|| {str(e)}")
             return str(e),False
         
 

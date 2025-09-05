@@ -1,4 +1,5 @@
 from backend.APIs.db_sqlite import ConexionSQLite 
+from backend.Logger.LoggerUtil import Logger 
 
 class ConexionAuthSQLite(ConexionSQLite):
     def __init__(self):
@@ -15,6 +16,7 @@ class ConexionAuthSQLite(ConexionSQLite):
                 return "",False
             return ret[0][0],True
         except Exception as e:
+            Logger.generate_log_error(e)
             return str(e),False
             
 
